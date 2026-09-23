@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>IPChat | Login</title>
+<link rel="stylesheet" href="style.css">
+</head>
+
+<body class="login-page">
+
+<div class="login-card">
+
+    <div class="logo">
+        <span>IP</span>CHAT
+    </div>
+
+    <p class="tagline">
+        Private communication made simple
+    </p>
+
+    <form id="loginForm">
+
+        <label for="username">Username</label>
+
+        <input
+            id="username"
+            type="text"
+            maxlength="30"
+            placeholder="Enter your username"
+            required
+        >
+
+        <label for="room">IP / Room Code</label>
+
+        <input
+            id="room"
+            type="text"
+            maxlength="40"
+            placeholder="Example: SSE2026"
+            required
+        >
+
+        <button type="submit">
+            ENTER IPCHAT
+        </button>
+
+        <p id="error"></p>
+
+    </form>
+
+</div>
+
+<script src="login.js"></script>
+
+</body>
+</html>

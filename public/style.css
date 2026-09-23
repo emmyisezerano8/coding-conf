@@ -1,0 +1,576 @@
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family:
+        Arial,
+        Helvetica,
+        sans-serif;
+
+    background: #050912;
+    color: white;
+}
+
+
+/* =========================
+   LOGIN
+========================= */
+
+.login-page {
+
+    min-height: 100vh;
+
+    display: flex;
+
+    justify-content: center;
+
+    align-items: center;
+
+    padding: 20px;
+
+    background:
+        radial-gradient(circle at top,
+            #12304a,
+            #050912 65%);
+}
+
+.login-card {
+
+    width: 100%;
+
+    max-width: 430px;
+
+    padding: 40px;
+
+    border-radius: 24px;
+
+    background:
+        rgba(9, 18, 30, .96);
+
+    border:
+        1px solid #21405b;
+
+    box-shadow:
+        0 30px 80px rgba(0, 0, 0, .55);
+}
+
+.logo {
+
+    text-align: center;
+
+    font-size: 38px;
+
+    font-weight: 900;
+
+    letter-spacing: 4px;
+}
+
+.logo span,
+.brand span {
+
+    color: #00d9ff;
+}
+
+.tagline {
+
+    text-align: center;
+
+    color: #8195a9;
+
+    margin:
+        10px 0 30px;
+}
+
+label {
+
+    display: block;
+
+    margin:
+        18px 0 8px;
+
+    color: #b7c6d5;
+
+    font-size: 14px;
+}
+
+input {
+
+    width: 100%;
+
+    padding: 14px;
+
+    border-radius: 12px;
+
+    border:
+        1px solid #263d54;
+
+    outline: none;
+
+    background: #0b1624;
+
+    color: white;
+
+    font-size: 15px;
+}
+
+input:focus {
+
+    border-color: #00d9ff;
+
+    box-shadow:
+        0 0 0 3px rgba(0, 217, 255, .08);
+}
+
+.login-card button {
+
+    width: 100%;
+
+    margin-top: 25px;
+
+    padding: 14px;
+
+    border: none;
+
+    border-radius: 12px;
+
+    background:
+        linear-gradient(135deg,
+            #00d9ff,
+            #0077ff);
+
+    color: white;
+
+    font-weight: bold;
+
+    cursor: pointer;
+}
+
+#error {
+
+    min-height: 20px;
+
+    margin-top: 15px;
+
+    color: #ff6677;
+
+    text-align: center;
+}
+
+
+/* =========================
+   CHAT
+========================= */
+
+.app {
+
+    display: flex;
+
+    height: 100vh;
+}
+
+
+/* SIDEBAR */
+
+.sidebar {
+
+    width: 280px;
+
+    display: flex;
+
+    flex-direction: column;
+
+    padding: 25px;
+
+    background: #080f1b;
+
+    border-right:
+        1px solid #1a2d40;
+}
+
+.brand {
+
+    font-size: 27px;
+
+    font-weight: 900;
+
+    letter-spacing: 2px;
+
+    margin-bottom: 30px;
+}
+
+.room-card {
+
+    padding: 15px;
+
+    border-radius: 14px;
+
+    background: #0c1928;
+
+    border:
+        1px solid #1c344a;
+}
+
+.room-card small {
+
+    display: block;
+
+    color: #71869a;
+
+    margin-bottom: 6px;
+}
+
+.room-card strong {
+
+    color: #00d9ff;
+
+    word-break: break-all;
+}
+
+.online-header {
+
+    display: flex;
+
+    justify-content: space-between;
+
+    margin:
+        28px 0 15px;
+
+    color: #91a5b9;
+
+    font-size: 13px;
+}
+
+.online-header b {
+
+    color: #46e6a5;
+}
+
+.users-list {
+
+    flex: 1;
+
+    overflow-y: auto;
+}
+
+.user {
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 10px;
+
+    padding: 9px;
+
+    margin-bottom: 5px;
+
+    border-radius: 10px;
+}
+
+.user:hover {
+
+    background: #0d1c2c;
+}
+
+.avatar {
+
+    width: 36px;
+
+    height: 36px;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    border-radius: 50%;
+
+    background:
+        linear-gradient(135deg,
+            #00d9ff,
+            #0077ff);
+
+    font-weight: bold;
+}
+
+.online-dot {
+
+    width: 8px;
+
+    height: 8px;
+
+    margin-left: auto;
+
+    border-radius: 50%;
+
+    background: #46e6a5;
+}
+
+.leave-button {
+
+    padding: 12px;
+
+    border-radius: 10px;
+
+    border:
+        1px solid #522532;
+
+    background: #24131a;
+
+    color: #ff7080;
+
+    cursor: pointer;
+}
+
+
+/* CHAT */
+
+.chat {
+
+    flex: 1;
+
+    min-width: 0;
+
+    display: flex;
+
+    flex-direction: column;
+}
+
+.chat-header {
+
+    height: 75px;
+
+    display: flex;
+
+    align-items: center;
+
+    padding: 0 25px;
+
+    background: #080f1b;
+
+    border-bottom:
+        1px solid #1a2d40;
+}
+
+.chat-header h2 {
+
+    font-size: 19px;
+}
+
+.chat-header p {
+
+    margin-top: 5px;
+
+    color: #46e6a5;
+
+    font-size: 12px;
+}
+
+.messages {
+
+    flex: 1;
+
+    overflow-y: auto;
+
+    padding: 25px;
+}
+
+.message {
+
+    width: fit-content;
+
+    max-width: 75%;
+
+    margin-bottom: 15px;
+
+    padding: 13px 16px;
+
+    border-radius:
+        15px 15px 15px 4px;
+
+    background: #0d1a29;
+
+    border:
+        1px solid #1d354c;
+}
+
+.message.own {
+
+    margin-left: auto;
+
+    border-radius:
+        15px 15px 4px 15px;
+
+    background: #064057;
+
+    border-color: #087695;
+}
+
+.message strong {
+
+    display: block;
+
+    color: #00d9ff;
+
+    margin-bottom: 5px;
+}
+
+.message p {
+
+    line-height: 1.5;
+
+    word-break: break-word;
+}
+
+.message small {
+
+    display: block;
+
+    margin-top: 7px;
+
+    color: #8094a7;
+
+    font-size: 10px;
+}
+
+.system-message {
+
+    text-align: center;
+
+    margin: 15px;
+
+    color: #708498;
+
+    font-size: 12px;
+}
+
+.typing {
+
+    height: 25px;
+
+    padding: 0 25px;
+
+    color: #71869a;
+
+    font-size: 12px;
+}
+
+.composer {
+
+    display: flex;
+
+    gap: 10px;
+
+    padding: 15px 20px;
+
+    background: #080f1b;
+
+    border-top:
+        1px solid #1a2d40;
+}
+
+.composer input {
+
+    flex: 1;
+}
+
+.composer button {
+
+    padding:
+        0 22px;
+
+    border: none;
+
+    border-radius: 12px;
+
+    background:
+        linear-gradient(135deg,
+            #00d9ff,
+            #0077ff);
+
+    color: white;
+
+    font-weight: bold;
+
+    cursor: pointer;
+}
+
+
+/* MOBILE */
+
+@media (max-width: 700px) {
+
+    .sidebar {
+
+        width: 210px;
+
+        padding: 15px;
+    }
+
+    .message {
+
+        max-width: 90%;
+    }
+}
+
+@media (max-width: 500px) {
+
+    .sidebar {
+
+        width: 70px;
+
+        padding: 10px;
+    }
+
+    .brand {
+
+        font-size: 14px;
+    }
+
+    .room-card,
+    .online-header {
+
+        display: none;
+    }
+
+    .user {
+
+        justify-content: center;
+    }
+
+    .user span {
+
+        display: none;
+    }
+
+    .leave-button {
+
+        font-size: 0;
+    }
+
+    .leave-button::after {
+
+        content: "×";
+
+        font-size: 22px;
+    }
+
+    .chat-header {
+
+        padding: 0 15px;
+    }
+
+    .messages {
+
+        padding: 15px;
+    }
+
+    .composer {
+
+        padding: 10px;
+    }
+}

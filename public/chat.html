@@ -1,0 +1,2462 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>IPChat</title>
+
+<style>
+/* =========================================================
+   IPCHAT - SINGLE FILE CSS
+========================================================= */
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+:root {
+    --bg: #05080d;
+    --panel: #0b111a;
+    --panel-2: #101923;
+    --border: rgba(0, 255, 200, 0.14);
+    --cyan: #00ffd5;
+    --cyan-dark: #00bfa5;
+    --blue: #00aaff;
+    --red: #ff426d;
+    --text: #f4f8fb;
+    --muted: #82909d;
+    --message: #101923;
+    --mine: #063c35;
+}
+
+body {
+    min-height: 100vh;
+    background:
+        radial-gradient(circle at 15% 10%, rgba(0,255,213,.08), transparent 30%),
+        radial-gradient(circle at 85% 90%, rgba(0,170,255,.07), transparent 30%),
+        var(--bg);
+    color: var(--text);
+    font-family: Inter, "Segoe UI", Arial, sans-serif;
+    overflow: hidden;
+}
+
+button,
+input {
+    font: inherit;
+}
+
+button {
+    cursor: pointer;
+}
+
+/* =========================================================
+   APP
+========================================================= */
+
+.app {
+    width: 100%;
+    height: 100vh;
+    display: flex;
+}
+
+/* =========================================================
+   SIDEBAR
+========================================================= */
+
+.sidebar {
+    width: 285px;
+    height: 100%;
+    background: rgba(7, 12, 18, .96);
+    border-right: 1px solid var(--border);
+    padding: 22px;
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    z-index: 5;
+}
+
+.brand {
+    font-size: 27px;
+    font-weight: 900;
+    letter-spacing: 2px;
+    margin-bottom: 28px;
+}
+
+.brand span {
+    color: var(--cyan);
+    text-shadow: 0 0 16px rgba(0,255,213,.5);
+}
+
+.room-card {
+    background: linear-gradient(
+        145deg,
+        rgba(0,255,213,.08),
+        rgba(0,170,255,.04)
+    );
+    border: 1px solid var(--border);
+    border-radius: 15px;
+    padding: 15px;
+    margin-bottom: 24px;
+}
+
+.room-card small {
+    color: var(--muted);
+    display: block;
+    font-size: 10px;
+    letter-spacing: 2px;
+    margin-bottom: 6px;
+}
+
+.room-card strong {
+    color: var(--cyan);
+    word-break: break-all;
+}
+
+.online-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    color: var(--muted);
+    font-size: 12px;
+    margin-bottom: 12px;
+}
+
+.online-header b {
+    color: var(--cyan);
+    background: rgba(0,255,213,.08);
+    border: 1px solid rgba(0,255,213,.2);
+    padding: 4px 9px;
+    border-radius: 20px;
+}
+
+.users-list {
+    flex: 1;
+    overflow-y: auto;
+}
+
+.user {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px;
+    margin-bottom: 7px;
+    border-radius: 11px;
+    transition: .2s;
+}
+
+.user:hover {
+    background: rgba(255,255,255,.04);
+}
+
+.avatar {
+    width: 35px;
+    height: 35px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, var(--cyan), var(--blue));
+    color: #00100d;
+    display: grid;
+    place-items: center;
+    font-size: 12px;
+    font-weight: 900;
+}
+
+.user-info {
+    min-width: 0;
+}
+
+.user-name {
+    font-size: 13px;
+    font-weight: 700;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.user-status {
+    color: #6c7b87;
+    font-size: 10px;
+}
+
+.online-dot {
+    width: 8px;
+    height: 8px;
+    background: #00e69a;
+    border-radius: 50%;
+    margin-left: auto;
+    box-shadow: 0 0 10px rgba(0,230,154,.7);
+}
+
+.leave-button {
+    width: 100%;
+    border: 1px solid rgba(255,66,109,.25);
+    background: rgba(255,66,109,.07);
+    color: #ff6f8d;
+    border-radius: 12px;
+    padding: 12px;
+    transition: .2s;
+}
+
+.leave-button:hover {
+    background: rgba(255,66,109,.15);
+    border-color: rgba(255,66,109,.5);
+}
+
+/* =========================================================
+   CHAT
+========================================================= */
+
+.chat {
+    flex: 1;
+    min-width: 0;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+.chat-header {
+    min-height: 82px;
+    padding: 17px 25px;
+    border-bottom: 1px solid var(--border);
+    background: rgba(5,8,13,.75);
+    backdrop-filter: blur(15px);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.chat-header h2 {
+    font-size: 19px;
+}
+
+.chat-header p {
+    color: var(--muted);
+    font-size: 12px;
+    margin-top: 5px;
+}
+
+/* =========================================================
+   CALL BUTTONS
+========================================================= */
+
+.call-actions {
+    display: flex;
+    gap: 8px;
+}
+
+.call-button {
+    width: 42px;
+    height: 42px;
+    border: 1px solid var(--border);
+    background: rgba(0,255,213,.06);
+    color: var(--cyan);
+    border-radius: 12px;
+    font-size: 17px;
+    transition: .2s;
+}
+
+.call-button:hover {
+    background: rgba(0,255,213,.14);
+    transform: translateY(-1px);
+}
+
+/* =========================================================
+   MESSAGES
+========================================================= */
+
+.messages {
+    flex: 1;
+    overflow-y: auto;
+    padding: 25px;
+    scroll-behavior: smooth;
+}
+
+.message {
+    display: flex;
+    margin-bottom: 15px;
+}
+
+.message.mine {
+    justify-content: flex-end;
+}
+
+.message-content {
+    max-width: min(75%, 650px);
+}
+
+.message-bubble {
+    background: var(--message);
+    border: 1px solid rgba(255,255,255,.06);
+    border-radius: 15px;
+    padding: 11px 14px;
+    color: var(--text);
+    line-height: 1.5;
+    overflow-wrap: anywhere;
+}
+
+.message.mine .message-bubble {
+    background: var(--mine);
+    border-color: rgba(0,255,213,.13);
+}
+
+.message-meta {
+    display: flex;
+    gap: 8px;
+    color: #61707d;
+    font-size: 10px;
+    margin: 5px 5px 0;
+}
+
+.message.mine .message-meta {
+    justify-content: flex-end;
+}
+
+.message-author {
+    color: var(--cyan);
+    font-weight: 700;
+}
+
+.system-message {
+    text-align: center;
+    color: #5e6d79;
+    font-size: 11px;
+    margin: 15px 0;
+}
+
+/* =========================================================
+   FILE MESSAGE
+========================================================= */
+
+.file-message {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 10px;
+    border-radius: 11px;
+    background: rgba(255,255,255,.04);
+}
+
+.file-icon {
+    width: 40px;
+    height: 40px;
+    display: grid;
+    place-items: center;
+    background: rgba(0,255,213,.08);
+    border-radius: 10px;
+    font-size: 20px;
+}
+
+.file-info {
+    min-width: 0;
+}
+
+.file-name {
+    font-weight: 700;
+    word-break: break-all;
+    font-size: 13px;
+}
+
+.file-size {
+    color: var(--muted);
+    font-size: 10px;
+    margin-top: 3px;
+}
+
+.file-open {
+    display: inline-block;
+    margin-top: 6px;
+    color: var(--cyan);
+    text-decoration: none;
+    font-size: 11px;
+}
+
+/* =========================================================
+   IMAGE PREVIEW
+========================================================= */
+
+.chat-image {
+    max-width: 300px;
+    max-height: 300px;
+    display: block;
+    border-radius: 12px;
+    object-fit: contain;
+}
+
+/* =========================================================
+   AUDIO
+========================================================= */
+
+.voice-message {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.voice-message audio {
+    max-width: 250px;
+}
+
+/* =========================================================
+   TYPING
+========================================================= */
+
+.typing {
+    min-height: 24px;
+    padding: 0 25px 5px;
+    color: var(--muted);
+    font-size: 11px;
+}
+
+/* =========================================================
+   COMPOSER
+========================================================= */
+
+.composer {
+    padding: 15px 20px 20px;
+    border-top: 1px solid var(--border);
+    display: flex;
+    gap: 8px;
+    background: rgba(5,8,13,.9);
+}
+
+.message-input-wrap {
+    flex: 1;
+    display: flex;
+    gap: 7px;
+    min-width: 0;
+}
+
+#messageInput {
+    flex: 1;
+    min-width: 0;
+    border: 1px solid rgba(255,255,255,.09);
+    background: #0c131c;
+    color: var(--text);
+    outline: none;
+    border-radius: 13px;
+    padding: 13px 15px;
+}
+
+#messageInput:focus {
+    border-color: rgba(0,255,213,.45);
+    box-shadow: 0 0 0 3px rgba(0,255,213,.05);
+}
+
+.tool-button {
+    width: 46px;
+    flex-shrink: 0;
+    border: 1px solid rgba(255,255,255,.08);
+    background: #0c131c;
+    color: #b5c1c9;
+    border-radius: 12px;
+    transition: .2s;
+}
+
+.tool-button:hover {
+    color: var(--cyan);
+    border-color: rgba(0,255,213,.3);
+}
+
+.send-button {
+    min-width: 75px;
+    border: 0;
+    border-radius: 12px;
+    background: linear-gradient(135deg, var(--cyan), var(--blue));
+    color: #00100d;
+    font-weight: 900;
+    transition: .2s;
+}
+
+.send-button:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 8px 25px rgba(0,255,213,.15);
+}
+
+/* =========================================================
+   RECORDING
+========================================================= */
+
+.recording-panel {
+    display: flex;
+    align-items: center;
+    gap: 9px;
+    margin: 0 20px 8px;
+    padding: 10px 13px;
+    border: 1px solid rgba(255,66,109,.25);
+    background: rgba(255,66,109,.06);
+    border-radius: 12px;
+}
+
+.recording-panel.hidden {
+    display: none;
+}
+
+.recording-dot {
+    width: 9px;
+    height: 9px;
+    background: #ff426d;
+    border-radius: 50%;
+    animation: recordingPulse 1s infinite;
+}
+
+@keyframes recordingPulse {
+    50% {
+        opacity: .35;
+        transform: scale(.7);
+    }
+}
+
+.recording-time {
+    flex: 1;
+    color: #ff8ca3;
+    font-size: 12px;
+}
+
+.stop-recording {
+    border: 1px solid rgba(255,66,109,.25);
+    color: #ff8ca3;
+    background: transparent;
+    padding: 6px 10px;
+    border-radius: 8px;
+}
+
+/* =========================================================
+   VIDEO CALL
+========================================================= */
+
+.call-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,.82);
+    backdrop-filter: blur(10px);
+    display: none;
+    align-items: center;
+    justify-content: center;
+    z-index: 100;
+    padding: 20px;
+}
+
+.call-overlay.active {
+    display: flex;
+}
+
+.call-window {
+    width: min(950px, 100%);
+    height: min(680px, 90vh);
+    background: #060a10;
+    border: 1px solid rgba(0,255,213,.15);
+    border-radius: 22px;
+    overflow: hidden;
+    box-shadow: 0 30px 100px rgba(0,0,0,.6);
+    display: flex;
+    flex-direction: column;
+}
+
+.call-top {
+    height: 58px;
+    padding: 0 18px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border-bottom: 1px solid var(--border);
+}
+
+.call-title {
+    font-weight: 800;
+}
+
+.call-status {
+    color: var(--muted);
+    font-size: 11px;
+}
+
+.video-container {
+    flex: 1;
+    position: relative;
+    background: #020406;
+    overflow: hidden;
+}
+
+#remoteVideo {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    background: #020406;
+}
+
+#localVideo {
+    position: absolute;
+    right: 18px;
+    bottom: 18px;
+    width: 190px;
+    height: 125px;
+    object-fit: cover;
+    border-radius: 14px;
+    border: 1px solid rgba(255,255,255,.15);
+    background: #000;
+    box-shadow: 0 15px 40px rgba(0,0,0,.5);
+}
+
+.audio-call-placeholder {
+    position: absolute;
+    inset: 0;
+    display: grid;
+    place-items: center;
+    flex-direction: column;
+    color: var(--cyan);
+    font-size: 70px;
+}
+
+.audio-call-placeholder span {
+    display: block;
+    color: white;
+    font-size: 15px;
+    margin-top: 15px;
+}
+
+.call-controls {
+    min-height: 80px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 12px;
+    border-top: 1px solid var(--border);
+}
+
+.call-control {
+    width: 46px;
+    height: 46px;
+    border: 1px solid rgba(255,255,255,.1);
+    background: #111923;
+    color: white;
+    border-radius: 50%;
+}
+
+.call-control.active {
+    background: rgba(0,255,213,.1);
+    color: var(--cyan);
+}
+
+.end-call {
+    background: var(--red);
+    border: 0;
+    color: white;
+}
+
+.hidden {
+    display: none !important;
+}
+
+/* =========================================================
+   SCROLLBARS
+========================================================= */
+
+::-webkit-scrollbar {
+    width: 6px;
+}
+
+::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+    background: #1c2934;
+    border-radius: 20px;
+}
+
+/* =========================================================
+   MOBILE
+========================================================= */
+
+@media (max-width: 750px) {
+
+    .sidebar {
+        width: 210px;
+        padding: 15px;
+    }
+
+    .brand {
+        font-size: 22px;
+    }
+
+    .messages {
+        padding: 15px;
+    }
+
+    .message-content {
+        max-width: 88%;
+    }
+
+    .composer {
+        padding: 10px;
+        flex-wrap: wrap;
+    }
+
+    .message-input-wrap {
+        width: 100%;
+        order: 1;
+    }
+
+    .send-button {
+        height: 43px;
+        order: 2;
+        flex: 1;
+    }
+
+    .tool-button {
+        height: 43px;
+    }
+
+    #localVideo {
+        width: 120px;
+        height: 85px;
+        right: 10px;
+        bottom: 10px;
+    }
+}
+
+@media (max-width: 520px) {
+
+    .sidebar {
+        width: 170px;
+    }
+
+    .room-card {
+        padding: 10px;
+    }
+
+    .call-button {
+        width: 37px;
+        height: 37px;
+    }
+
+    .chat-header {
+        padding: 12px;
+    }
+
+    .messages {
+        padding: 12px;
+    }
+
+    .message-bubble {
+        padding: 9px 11px;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<div class="app">
+
+    <!-- =====================================================
+         SIDEBAR
+    ====================================================== -->
+
+    <aside class="sidebar">
+
+        <div class="brand">
+            <span>IP</span>CHAT
+        </div>
+
+        <div class="room-card">
+            <small>ROOM</small>
+            <strong id="roomName">---</strong>
+        </div>
+
+        <div class="online-header">
+            <span>ONLINE</span>
+            <b id="onlineCount">0</b>
+        </div>
+
+        <div id="usersList" class="users-list"></div>
+
+        <button
+            id="leaveButton"
+            class="leave-button"
+            type="button"
+        >
+            Leave Room
+        </button>
+
+    </aside>
+
+
+    <!-- =====================================================
+         CHAT AREA
+    ====================================================== -->
+
+    <main class="chat">
+
+        <header class="chat-header">
+
+            <div>
+                <h2 id="chatTitle">IPChat</h2>
+
+                <p id="status">
+                    Local connection
+                </p>
+            </div>
+
+            <div class="call-actions">
+
+                <button
+                    id="audioCallButton"
+                    class="call-button"
+                    type="button"
+                    title="Audio call"
+                    aria-label="Start audio call"
+                >
+                    📞
+                </button>
+
+                <button
+                    id="videoCallButton"
+                    class="call-button"
+                    type="button"
+                    title="Video call"
+                    aria-label="Start video call"
+                >
+                    🎥
+                </button>
+
+            </div>
+
+        </header>
+
+
+        <!-- =================================================
+             MESSAGES
+        ================================================== -->
+
+        <section
+            id="messages"
+            class="messages"
+            aria-live="polite"
+        ></section>
+
+
+        <!-- =================================================
+             TYPING
+        ================================================== -->
+
+        <div
+            id="typing"
+            class="typing"
+            aria-live="polite"
+        ></div>
+
+
+        <!-- =================================================
+             VOICE RECORDING PANEL
+        ================================================== -->
+
+        <div
+            id="recordingPanel"
+            class="recording-panel hidden"
+        >
+
+            <span class="recording-dot"></span>
+
+            <span
+                id="recordingTime"
+                class="recording-time"
+            >
+                Recording 00:00
+            </span>
+
+            <button
+                id="stopRecording"
+                class="stop-recording"
+                type="button"
+            >
+                Stop
+            </button>
+
+        </div>
+
+
+        <!-- =================================================
+             COMPOSER
+        ================================================== -->
+
+        <form
+            id="messageForm"
+            class="composer"
+        >
+
+            <div class="message-input-wrap">
+
+                <!-- FILE UPLOAD -->
+
+                <input
+                    id="fileInput"
+                    type="file"
+                    hidden
+                    multiple
+                    accept="image/*,video/*,audio/*,.pdf,.doc,.docx,.txt,.zip"
+                >
+
+                <button
+                    id="uploadButton"
+                    class="tool-button"
+                    type="button"
+                    title="Upload file"
+                    aria-label="Upload file"
+                >
+                    📎
+                </button>
+
+
+                <!-- VOICE NOTE -->
+
+                <button
+                    id="voiceButton"
+                    class="tool-button"
+                    type="button"
+                    title="Record voice note"
+                    aria-label="Record voice note"
+                >
+                    🎤
+                </button>
+
+
+                <input
+                    id="messageInput"
+                    type="text"
+                    maxlength="1000"
+                    placeholder="Write a message..."
+                    autocomplete="off"
+                >
+
+            </div>
+
+
+            <button
+                class="send-button"
+                type="submit"
+            >
+                Send
+            </button>
+
+        </form>
+
+    </main>
+
+</div>
+
+
+<!-- =========================================================
+     CALL OVERLAY
+========================================================= -->
+
+<div
+    id="callOverlay"
+    class="call-overlay"
+>
+
+    <div class="call-window">
+
+        <div class="call-top">
+
+            <div>
+                <div
+                    id="callTitle"
+                    class="call-title"
+                >
+                    IPChat Call
+                </div>
+
+                <div
+                    id="callStatus"
+                    class="call-status"
+                >
+                    Connecting...
+                </div>
+            </div>
+
+        </div>
+
+
+        <div class="video-container">
+
+            <video
+                id="remoteVideo"
+                autoplay
+                playsinline
+            ></video>
+
+            <video
+                id="localVideo"
+                autoplay
+                muted
+                playsinline
+            ></video>
+
+
+            <div
+                id="audioCallPlaceholder"
+                class="audio-call-placeholder hidden"
+            >
+                📞
+
+                <span>
+                    Audio Call
+                </span>
+            </div>
+
+        </div>
+
+
+        <div class="call-controls">
+
+            <button
+                id="muteButton"
+                class="call-control"
+                type="button"
+                title="Mute microphone"
+            >
+                🎤
+            </button>
+
+            <button
+                id="cameraButton"
+                class="call-control"
+                type="button"
+                title="Turn camera off"
+            >
+                📷
+            </button>
+
+            <button
+                id="endCallButton"
+                class="call-control end-call"
+                type="button"
+                title="End call"
+            >
+                ☎
+            </button>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<script>
+
+/* =========================================================
+   IPCHAT - SINGLE FILE JAVASCRIPT
+========================================================= */
+
+"use strict";
+
+
+/* =========================================================
+   STORAGE
+========================================================= */
+
+const USER_KEY = "ipchat_username";
+const ROOM_KEY = "ipchat_room";
+
+
+/* =========================================================
+   USER
+========================================================= */
+
+let username =
+    localStorage.getItem(USER_KEY) ||
+    "Guest-" + Math.floor(Math.random() * 9999);
+
+let room =
+    new URLSearchParams(location.search).get("room") ||
+    localStorage.getItem(ROOM_KEY) ||
+    "general";
+
+localStorage.setItem(USER_KEY, username);
+localStorage.setItem(ROOM_KEY, room);
+
+
+/* =========================================================
+   DOM
+========================================================= */
+
+const roomName =
+    document.getElementById("roomName");
+
+const usersList =
+    document.getElementById("usersList");
+
+const onlineCount =
+    document.getElementById("onlineCount");
+
+const messages =
+    document.getElementById("messages");
+
+const typing =
+    document.getElementById("typing");
+
+const status =
+    document.getElementById("status");
+
+const messageForm =
+    document.getElementById("messageForm");
+
+const messageInput =
+    document.getElementById("messageInput");
+
+const leaveButton =
+    document.getElementById("leaveButton");
+
+const uploadButton =
+    document.getElementById("uploadButton");
+
+const fileInput =
+    document.getElementById("fileInput");
+
+const voiceButton =
+    document.getElementById("voiceButton");
+
+const recordingPanel =
+    document.getElementById("recordingPanel");
+
+const recordingTime =
+    document.getElementById("recordingTime");
+
+const stopRecording =
+    document.getElementById("stopRecording");
+
+const audioCallButton =
+    document.getElementById("audioCallButton");
+
+const videoCallButton =
+    document.getElementById("videoCallButton");
+
+const callOverlay =
+    document.getElementById("callOverlay");
+
+const callTitle =
+    document.getElementById("callTitle");
+
+const callStatus =
+    document.getElementById("callStatus");
+
+const remoteVideo =
+    document.getElementById("remoteVideo");
+
+const localVideo =
+    document.getElementById("localVideo");
+
+const audioCallPlaceholder =
+    document.getElementById("audioCallPlaceholder");
+
+const muteButton =
+    document.getElementById("muteButton");
+
+const cameraButton =
+    document.getElementById("cameraButton");
+
+const endCallButton =
+    document.getElementById("endCallButton");
+
+
+/* =========================================================
+   INITIAL UI
+========================================================= */
+
+roomName.textContent = room;
+status.textContent = "Browser local connection";
+
+
+/* =========================================================
+   USER ID
+========================================================= */
+
+const userId =
+    crypto.randomUUID
+        ? crypto.randomUUID()
+        : Date.now() + "-" + Math.random();
+
+
+/* =========================================================
+   BROADCAST CHANNEL
+========================================================= */
+
+const channel =
+    new BroadcastChannel(
+        "ipchat-room-" + room
+    );
+
+
+/* =========================================================
+   USERS
+========================================================= */
+
+const users = new Map();
+
+users.set(userId, {
+    id: userId,
+    username,
+    lastSeen: Date.now()
+});
+
+
+/* =========================================================
+   RENDER USERS
+========================================================= */
+
+function renderUsers() {
+
+    usersList.replaceChildren();
+
+    const sortedUsers =
+        [...users.values()]
+            .sort((a, b) =>
+                a.username.localeCompare(b.username)
+            );
+
+    onlineCount.textContent =
+        sortedUsers.length;
+
+    sortedUsers.forEach(user => {
+
+        const row =
+            document.createElement("div");
+
+        row.className = "user";
+
+        const avatar =
+            document.createElement("div");
+
+        avatar.className = "avatar";
+
+        avatar.textContent =
+            user.username
+                .substring(0, 2)
+                .toUpperCase();
+
+        const info =
+            document.createElement("div");
+
+        info.className = "user-info";
+
+        const name =
+            document.createElement("div");
+
+        name.className = "user-name";
+
+        name.textContent =
+            user.username +
+            (user.id === userId ? " (You)" : "");
+
+        const state =
+            document.createElement("div");
+
+        state.className = "user-status";
+
+        state.textContent = "Online";
+
+        const dot =
+            document.createElement("div");
+
+        dot.className = "online-dot";
+
+        info.appendChild(name);
+        info.appendChild(state);
+
+        row.appendChild(avatar);
+        row.appendChild(info);
+        row.appendChild(dot);
+
+        usersList.appendChild(row);
+    });
+}
+
+renderUsers();
+
+
+/* =========================================================
+   SYSTEM MESSAGE
+========================================================= */
+
+function addSystemMessage(text) {
+
+    const item =
+        document.createElement("div");
+
+    item.className = "system-message";
+
+    item.textContent = text;
+
+    messages.appendChild(item);
+
+    scrollMessages();
+}
+
+
+/* =========================================================
+   TIME
+========================================================= */
+
+function getTime() {
+
+    return new Date()
+        .toLocaleTimeString([], {
+            hour: "2-digit",
+            minute: "2-digit"
+        });
+}
+
+
+/* =========================================================
+   SCROLL
+========================================================= */
+
+function scrollMessages() {
+
+    messages.scrollTop =
+        messages.scrollHeight;
+}
+
+
+/* =========================================================
+   TEXT MESSAGE
+========================================================= */
+
+function addTextMessage(data) {
+
+    const wrapper =
+        document.createElement("div");
+
+    wrapper.className =
+        "message" +
+        (data.userId === userId ? " mine" : "");
+
+
+    const content =
+        document.createElement("div");
+
+    content.className =
+        "message-content";
+
+
+    const bubble =
+        document.createElement("div");
+
+    bubble.className =
+        "message-bubble";
+
+    /*
+       IMPORTANT:
+       textContent is used instead of innerHTML
+       to prevent HTML/script injection.
+    */
+
+    bubble.textContent =
+        data.text;
+
+
+    const meta =
+        document.createElement("div");
+
+    meta.className =
+        "message-meta";
+
+
+    const author =
+        document.createElement("span");
+
+    author.className =
+        "message-author";
+
+    author.textContent =
+        data.username;
+
+
+    const time =
+        document.createElement("span");
+
+    time.textContent =
+        data.time || getTime();
+
+
+    meta.appendChild(author);
+    meta.appendChild(time);
+
+    content.appendChild(bubble);
+    content.appendChild(meta);
+
+    wrapper.appendChild(content);
+
+    messages.appendChild(wrapper);
+
+    scrollMessages();
+}
+
+
+/* =========================================================
+   FILE MESSAGE
+========================================================= */
+
+function addFileMessage(data) {
+
+    const wrapper =
+        document.createElement("div");
+
+    wrapper.className =
+        "message" +
+        (data.userId === userId ? " mine" : "");
+
+
+    const content =
+        document.createElement("div");
+
+    content.className =
+        "message-content";
+
+
+    const bubble =
+        document.createElement("div");
+
+    bubble.className =
+        "message-bubble";
+
+
+    if (
+        data.fileType &&
+        data.fileType.startsWith("image/") &&
+        data.url
+    ) {
+
+        const image =
+            document.createElement("img");
+
+        image.className =
+            "chat-image";
+
+        image.src =
+            data.url;
+
+        image.alt =
+            data.fileName || "Uploaded image";
+
+        bubble.appendChild(image);
+
+    } else {
+
+        const fileBox =
+            document.createElement("div");
+
+        fileBox.className =
+            "file-message";
+
+
+        const icon =
+            document.createElement("div");
+
+        icon.className =
+            "file-icon";
+
+        icon.textContent =
+            "📄";
+
+
+        const info =
+            document.createElement("div");
+
+        info.className =
+            "file-info";
+
+
+        const name =
+            document.createElement("div");
+
+        name.className =
+            "file-name";
+
+        name.textContent =
+            data.fileName;
+
+
+        const size =
+            document.createElement("div");
+
+        size.className =
+            "file-size";
+
+        size.textContent =
+            formatBytes(data.fileSize);
+
+
+        info.appendChild(name);
+        info.appendChild(size);
+
+
+        if (data.url) {
+
+            const link =
+                document.createElement("a");
+
+            link.className =
+                "file-open";
+
+            link.href =
+                data.url;
+
+            link.target =
+                "_blank";
+
+            link.rel =
+                "noopener noreferrer";
+
+            link.textContent =
+                "Open file";
+
+            info.appendChild(link);
+        }
+
+
+        fileBox.appendChild(icon);
+        fileBox.appendChild(info);
+
+        bubble.appendChild(fileBox);
+    }
+
+
+    const meta =
+        document.createElement("div");
+
+    meta.className =
+        "message-meta";
+
+
+    const author =
+        document.createElement("span");
+
+    author.className =
+        "message-author";
+
+    author.textContent =
+        data.username;
+
+
+    const time =
+        document.createElement("span");
+
+    time.textContent =
+        data.time || getTime();
+
+
+    meta.appendChild(author);
+    meta.appendChild(time);
+
+
+    content.appendChild(bubble);
+    content.appendChild(meta);
+
+    wrapper.appendChild(content);
+
+    messages.appendChild(wrapper);
+
+    scrollMessages();
+}
+
+
+/* =========================================================
+   BYTE FORMAT
+========================================================= */
+
+function formatBytes(bytes) {
+
+    if (!bytes) {
+        return "0 Bytes";
+    }
+
+    const units =
+        ["Bytes", "KB", "MB", "GB"];
+
+    const index =
+        Math.floor(
+            Math.log(bytes) / Math.log(1024)
+        );
+
+    return (
+        (bytes / Math.pow(1024, index))
+            .toFixed(1)
+        + " "
+        + units[index]
+    );
+}
+
+
+/* =========================================================
+   SEND TEXT
+========================================================= */
+
+messageForm.addEventListener(
+    "submit",
+    event => {
+
+        event.preventDefault();
+
+        const text =
+            messageInput.value.trim();
+
+        if (!text) {
+            return;
+        }
+
+        const data = {
+            type: "message",
+            userId,
+            username,
+            text,
+            time: getTime()
+        };
+
+        addTextMessage(data);
+
+        channel.postMessage(data);
+
+        messageInput.value = "";
+
+        sendTyping(false);
+    }
+);
+
+
+/* =========================================================
+   TYPING
+========================================================= */
+
+let typingTimer = null;
+
+function sendTyping(isTyping) {
+
+    channel.postMessage({
+        type: "typing",
+        userId,
+        username,
+        typing: isTyping
+    });
+}
+
+messageInput.addEventListener(
+    "input",
+    () => {
+
+        sendTyping(
+            messageInput.value.trim().length > 0
+        );
+
+        clearTimeout(typingTimer);
+
+        typingTimer =
+            setTimeout(() => {
+                sendTyping(false);
+            }, 1200);
+    }
+);
+
+
+/* =========================================================
+   FILE UPLOAD
+========================================================= */
+
+uploadButton.addEventListener(
+    "click",
+    () => {
+        fileInput.click();
+    }
+);
+
+
+fileInput.addEventListener(
+    "change",
+    () => {
+
+        const files =
+            [...fileInput.files];
+
+        files.forEach(file => {
+
+            const url =
+                URL.createObjectURL(file);
+
+            const data = {
+                type: "file",
+                userId,
+                username,
+                fileName: file.name,
+                fileSize: file.size,
+                fileType: file.type,
+                url,
+                time: getTime()
+            };
+
+            /*
+             * This displays the file locally.
+             * Object URLs cannot be transferred to another
+             * computer through BroadcastChannel.
+             */
+
+            addFileMessage(data);
+
+            channel.postMessage(data);
+        });
+
+        fileInput.value = "";
+    }
+);
+
+
+/* =========================================================
+   VOICE RECORDING
+========================================================= */
+
+let mediaRecorder = null;
+let audioChunks = [];
+let recordingStarted = 0;
+let recordingTimer = null;
+
+
+voiceButton.addEventListener(
+    "click",
+    startVoiceRecording
+);
+
+
+async function startVoiceRecording() {
+
+    if (mediaRecorder) {
+        return;
+    }
+
+    try {
+
+        const stream =
+            await navigator.mediaDevices.getUserMedia({
+                audio: true
+            });
+
+        audioChunks = [];
+
+        mediaRecorder =
+            new MediaRecorder(stream);
+
+        recordingStarted =
+            Date.now();
+
+        recordingPanel.classList.remove(
+            "hidden"
+        );
+
+        updateRecordingTime();
+
+        recordingTimer =
+            setInterval(
+                updateRecordingTime,
+                500
+            );
+
+
+        mediaRecorder.addEventListener(
+            "dataavailable",
+            event => {
+
+                if (event.data.size > 0) {
+                    audioChunks.push(event.data);
+                }
+            }
+        );
+
+
+        mediaRecorder.addEventListener(
+            "stop",
+            () => {
+
+                clearInterval(recordingTimer);
+
+                stream
+                    .getTracks()
+                    .forEach(track =>
+                        track.stop()
+                    );
+
+                const blob =
+                    new Blob(
+                        audioChunks,
+                        {
+                            type:
+                                mediaRecorder.mimeType ||
+                                "audio/webm"
+                        }
+                    );
+
+                const url =
+                    URL.createObjectURL(blob);
+
+                addVoiceMessage({
+                    type: "voice",
+                    userId,
+                    username,
+                    url,
+                    time: getTime()
+                });
+
+                mediaRecorder = null;
+
+                recordingPanel.classList.add(
+                    "hidden"
+                );
+
+                recordingTime.textContent =
+                    "Recording 00:00";
+            }
+        );
+
+
+        mediaRecorder.start();
+
+    } catch (error) {
+
+        console.error(error);
+
+        alert(
+            "Microphone access was denied or is unavailable."
+        );
+    }
+}
+
+
+/* =========================================================
+   RECORDING TIMER
+========================================================= */
+
+function updateRecordingTime() {
+
+    const seconds =
+        Math.floor(
+            (Date.now() - recordingStarted) / 1000
+        );
+
+    const minutes =
+        Math.floor(seconds / 60);
+
+    const remaining =
+        seconds % 60;
+
+    recordingTime.textContent =
+        "Recording " +
+        String(minutes).padStart(2, "0") +
+        ":" +
+        String(remaining).padStart(2, "0");
+}
+
+
+/* =========================================================
+   STOP RECORDING
+========================================================= */
+
+stopRecording.addEventListener(
+    "click",
+    () => {
+
+        if (
+            mediaRecorder &&
+            mediaRecorder.state !== "inactive"
+        ) {
+            mediaRecorder.stop();
+        }
+    }
+);
+
+
+/* =========================================================
+   VOICE MESSAGE
+========================================================= */
+
+function addVoiceMessage(data) {
+
+    const wrapper =
+        document.createElement("div");
+
+    wrapper.className =
+        "message" +
+        (data.userId === userId ? " mine" : "");
+
+
+    const content =
+        document.createElement("div");
+
+    content.className =
+        "message-content";
+
+
+    const bubble =
+        document.createElement("div");
+
+    bubble.className =
+        "message-bubble";
+
+
+    const voice =
+        document.createElement("div");
+
+    voice.className =
+        "voice-message";
+
+
+    const icon =
+        document.createElement("span");
+
+    icon.textContent =
+        "🎤";
+
+
+    const audio =
+        document.createElement("audio");
+
+    audio.controls = true;
+
+    audio.src =
+        data.url;
+
+
+    voice.appendChild(icon);
+    voice.appendChild(audio);
+
+    bubble.appendChild(voice);
+
+
+    const meta =
+        document.createElement("div");
+
+    meta.className =
+        "message-meta";
+
+
+    const author =
+        document.createElement("span");
+
+    author.className =
+        "message-author";
+
+    author.textContent =
+        data.username;
+
+
+    const time =
+        document.createElement("span");
+
+    time.textContent =
+        data.time;
+
+
+    meta.appendChild(author);
+    meta.appendChild(time);
+
+    content.appendChild(bubble);
+    content.appendChild(meta);
+
+    wrapper.appendChild(content);
+
+    messages.appendChild(wrapper);
+
+    scrollMessages();
+}
+
+
+/* =========================================================
+   BROADCAST MESSAGE HANDLER
+========================================================= */
+
+channel.addEventListener(
+    "message",
+    event => {
+
+        const data =
+            event.data;
+
+        if (!data || data.userId === userId) {
+            return;
+        }
+
+
+        /* USER JOIN */
+
+        if (data.type === "user-join") {
+
+            users.set(
+                data.userId,
+                {
+                    id: data.userId,
+                    username: data.username,
+                    lastSeen: Date.now()
+                }
+            );
+
+            renderUsers();
+
+            channel.postMessage({
+                type: "user-response",
+                userId,
+                username
+            });
+
+            addSystemMessage(
+                data.username +
+                " joined the room."
+            );
+
+            return;
+        }
+
+
+        /* USER RESPONSE */
+
+        if (data.type === "user-response") {
+
+            users.set(
+                data.userId,
+                {
+                    id: data.userId,
+                    username: data.username,
+                    lastSeen: Date.now()
+                }
+            );
+
+            renderUsers();
+
+            return;
+        }
+
+
+        /* USER LEAVE */
+
+        if (data.type === "user-leave") {
+
+            const oldUser =
+                users.get(data.userId);
+
+            users.delete(data.userId);
+
+            renderUsers();
+
+            if (oldUser) {
+                addSystemMessage(
+                    oldUser.username +
+                    " left the room."
+                );
+            }
+
+            return;
+        }
+
+
+        /* TEXT MESSAGE */
+
+        if (data.type === "message") {
+
+            addTextMessage(data);
+
+            return;
+        }
+
+
+        /* FILE */
+
+        if (data.type === "file") {
+
+            /*
+             * The object URL belongs to the sender's
+             * browser and cannot normally be opened
+             * from another browser context.
+             */
+
+            if (data.url) {
+
+                addFileMessage({
+                    ...data,
+                    url: null
+                });
+
+            } else {
+
+                addFileMessage(data);
+            }
+
+            return;
+        }
+
+
+        /* TYPING */
+
+        if (data.type === "typing") {
+
+            if (data.typing) {
+
+                typing.textContent =
+                    data.username +
+                    " is typing...";
+
+            } else {
+
+                typing.textContent = "";
+            }
+
+            return;
+        }
+    }
+);
+
+
+/* =========================================================
+   ANNOUNCE JOIN
+========================================================= */
+
+channel.postMessage({
+    type: "user-join",
+    userId,
+    username
+});
+
+
+// Ask existing users to respond
+setTimeout(() => {
+
+    channel.postMessage({
+        type: "user-join",
+        userId,
+        username
+    });
+
+}, 200);
+
+
+/* =========================================================
+   AUDIO / VIDEO CALL
+========================================================= */
+
+let localStream = null;
+let isVideoCall = false;
+
+
+/* =========================================================
+   START AUDIO CALL
+========================================================= */
+
+audioCallButton.addEventListener(
+    "click",
+    () => startCall(false)
+);
+
+
+/* =========================================================
+   START VIDEO CALL
+========================================================= */
+
+videoCallButton.addEventListener(
+    "click",
+    () => startCall(true)
+);
+
+
+/* =========================================================
+   START CALL
+========================================================= */
+
+async function startCall(videoEnabled) {
+
+    if (localStream) {
+        return;
+    }
+
+    isVideoCall =
+        videoEnabled;
+
+    try {
+
+        localStream =
+            await navigator.mediaDevices.getUserMedia({
+                audio: true,
+                video: videoEnabled
+            });
+
+
+        localVideo.srcObject =
+            localStream;
+
+        localVideo.classList.toggle(
+            "hidden",
+            !videoEnabled
+        );
+
+        remoteVideo.classList.toggle(
+            "hidden",
+            !videoEnabled
+        );
+
+        audioCallPlaceholder.classList.toggle(
+            "hidden",
+            videoEnabled
+        );
+
+
+        callOverlay.classList.add(
+            "active"
+        );
+
+
+        callTitle.textContent =
+            videoEnabled
+                ? "IPChat Video Call"
+                : "IPChat Audio Call";
+
+
+        callStatus.textContent =
+            "Local call preview";
+
+
+        /*
+         * Without signaling/backend, this stream remains
+         * local. A real WebRTC call requires exchanging
+         * offers, answers and ICE candidates with another
+         * browser.
+         */
+
+    } catch (error) {
+
+        console.error(error);
+
+        alert(
+            "Camera/microphone permission was denied or unavailable."
+        );
+    }
+}
+
+
+/* =========================================================
+   MUTE
+========================================================= */
+
+muteButton.addEventListener(
+    "click",
+    () => {
+
+        if (!localStream) {
+            return;
+        }
+
+        const audioTracks =
+            localStream.getAudioTracks();
+
+        if (!audioTracks.length) {
+            return;
+        }
+
+        const enabled =
+            audioTracks[0].enabled;
+
+        audioTracks.forEach(
+            track => {
+                track.enabled = !enabled;
+            }
+        );
+
+        muteButton.textContent =
+            enabled ? "🔇" : "🎤";
+
+        muteButton.classList.toggle(
+            "active",
+            !enabled
+        );
+    }
+);
+
+
+/* =========================================================
+   CAMERA
+========================================================= */
+
+cameraButton.addEventListener(
+    "click",
+    () => {
+
+        if (!localStream) {
+            return;
+        }
+
+        const videoTracks =
+            localStream.getVideoTracks();
+
+        if (!videoTracks.length) {
+            return;
+        }
+
+        const enabled =
+            videoTracks[0].enabled;
+
+        videoTracks.forEach(
+            track => {
+                track.enabled = !enabled;
+            }
+        );
+
+        cameraButton.textContent =
+            enabled ? "🚫" : "📷";
+
+        cameraButton.classList.toggle(
+            "active",
+            !enabled
+        );
+    }
+);
+
+
+/* =========================================================
+   END CALL
+========================================================= */
+
+endCallButton.addEventListener(
+    "click",
+    endCall
+);
+
+
+function endCall() {
+
+    if (localStream) {
+
+        localStream
+            .getTracks()
+            .forEach(
+                track => track.stop()
+            );
+    }
+
+    localStream = null;
+
+    localVideo.srcObject = null;
+    remoteVideo.srcObject = null;
+
+    callOverlay.classList.remove(
+        "active"
+    );
+
+    muteButton.textContent = "🎤";
+    cameraButton.textContent = "📷";
+
+    muteButton.classList.remove("active");
+    cameraButton.classList.remove("active");
+
+    callStatus.textContent =
+        "Call ended";
+}
+
+
+/* =========================================================
+   LEAVE ROOM
+========================================================= */
+
+leaveButton.addEventListener(
+    "click",
+    () => {
+
+        channel.postMessage({
+            type: "user-leave",
+            userId,
+            username
+        });
+
+        if (mediaRecorder) {
+
+            if (
+                mediaRecorder.state !== "inactive"
+            ) {
+                mediaRecorder.stop();
+            }
+        }
+
+        endCall();
+
+        channel.close();
+
+        window.location.href =
+            "index.html";
+    }
+);
+
+
+/* =========================================================
+   PAGE CLOSE
+========================================================= */
+
+window.addEventListener(
+    "beforeunload",
+    () => {
+
+        try {
+
+            channel.postMessage({
+                type: "user-leave",
+                userId,
+                username
+            });
+
+            channel.close();
+
+        } catch (error) {
+            // Ignore shutdown errors.
+        }
+    }
+);
+
+
+/* =========================================================
+   CLEAN OLD USERS
+========================================================= */
+
+setInterval(
+    () => {
+
+        const now =
+            Date.now();
+
+        for (
+            const [id, user]
+            of users.entries()
+        ) {
+
+            if (
+                id !== userId &&
+                now - user.lastSeen > 30000
+            ) {
+                users.delete(id);
+            }
+        }
+
+        renderUsers();
+
+    },
+    10000
+);
+
+
+/* =========================================================
+   WELCOME
+========================================================= */
+
+addSystemMessage(
+    "Welcome to room " +
+    room +
+    ", " +
+    username +
+    "."
+);
+
+</script>
+
+</body>
+</html>
